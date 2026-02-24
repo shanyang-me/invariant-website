@@ -202,44 +202,77 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   margin-bottom: 72px;
 }
-.hero-diagram {
+/* ===== Illustration ===== */
+.illustration {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
 }
-.diagram-step {
+.ill-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
-.diagram-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+.ill-scene, .ill-output {
+  width: 280px;
+  height: 180px;
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.ill-scene:hover, .ill-output:hover, .ill-brain:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 28px var(--accent-dim);
+}
+.ill-scene-svg, .ill-output-svg {
+  width: 100%;
+  height: 100%;
+}
+.ill-brain {
+  width: 140px;
+  height: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
   transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 40px var(--accent-dim);
 }
-.diagram-icon:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-dim);
+.ill-brain-svg {
+  width: 120px;
+  height: 120px;
 }
-.diagram-step span {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+.ill-brain-stage {
+  margin: 0 4px;
 }
-.diagram-arrow {
-  font-size: 1.5rem;
-  color: var(--text-muted);
+.ill-arrow {
+  flex-shrink: 0;
   margin-bottom: 28px;
+}
+.ill-label {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+@media (max-width: 900px) {
+  .illustration { flex-direction: column; gap: 20px; }
+  .ill-arrow { transform: rotate(90deg); margin-bottom: 0; }
+  .ill-scene, .ill-output { width: 300px; height: 190px; }
+  .ill-brain { width: 120px; height: 120px; }
+  .ill-brain-svg { width: 100px; height: 100px; }
+}
+@media (max-width: 640px) {
+  .ill-scene, .ill-output { width: 100%; max-width: 320px; height: 180px; }
 }
 
 /* ===== Split (What Is) ===== */
