@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Efference — The Physics Brain for Vision</title>
+  <meta name="description" content="An AI engine that sees objects, reasons about forces, and predicts what happens next.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="logo">efference<span class="dot">.</span></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#demo">Demo</a>
+        <a href="https://github.com/shanyang/efference" target="_blank" rel="noopener">GitHub</a>
+        <a href="#demo" class="btn btn-sm">Try Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <h1 class="hero-title">The Physics Brain<br>for Vision</h1>
+      <p class="hero-sub">An AI engine that sees objects, reasons about forces, and predicts what happens next.</p>
+      <div class="hero-ctas">
+        <a href="#demo" class="btn btn-primary">Try Demo</a>
+        <a href="https://github.com/shanyang/efference" class="btn btn-outline" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+      <div class="hero-diagram">
+        <div class="diagram-step">
+          <div class="diagram-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="14" r="3" stroke="currentColor" stroke-width="2"/><path d="M4 22l7-5 4 3 6-7 7 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Image</span>
+        </div>
+        <div class="diagram-arrow">&rarr;</div>
+        <div class="diagram-step">
+          <div class="diagram-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4v10M16 28V18M10 16H4M28 16H22" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="2"/><path d="M8 8l4 4M20 20l4 4M8 24l4-4M20 12l4-4" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <span>Forces</span>
+        </div>
+        <div class="diagram-arrow">&rarr;</div>
+        <div class="diagram-step">
+          <div class="diagram-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 26C6 26 10 18 16 14C22 10 26 6 26 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="6" cy="26" r="3" fill="currentColor"/><path d="M23 3l5 3-5 3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Trajectories</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Is Efference -->
+  <section class="section section-alt" id="what-is">
+    <div class="container split">
+      <div class="split-text">
+        <h2>What Is Efference?</h2>
+        <p>Efference replaces hand-coded physics simulators with a <strong>large language model</strong> that reasons about the physical world. Given an image or scene description, it identifies objects, materials, and forces&mdash;then predicts what will happen next.</p>
+        <p>The result is a structured JSON output that downstream systems can use for physics-constrained image generation, robotics planning, or scene understanding.</p>
+        <p class="text-muted">Named after the neuroscience concept of <em>efference copy</em>&mdash;the brain's internal prediction of sensory consequences before an action occurs.</p>
+      </div>
+      <div class="split-code">
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-label">EfferenceOutput</span>
+          </div>
+<pre><code>{
+  <span class="k">"objects"</span>: [{
+    <span class="k">"name"</span>: <span class="s">"red_ball"</span>,
+    <span class="k">"material"</span>: <span class="s">"rubber"</span>,
+    <span class="k">"mass_kg"</span>: <span class="n">0.15</span>,
+    <span class="k">"state"</span>: <span class="s">"resting"</span>
+  }],
+  <span class="k">"forces"</span>: [{
+    <span class="k">"type"</span>: <span class="s">"gravity"</span>,
+    <span class="k">"source"</span>: <span class="s">"earth"</span>,
+    <span class="k">"target"</span>: <span class="s">"red_ball"</span>,
+    <span class="k">"magnitude"</span>: <span class="n">1.47</span>
+  }],
+  <span class="k">"will_happen"</span>: [
+    <span class="s">"The ball will remain at rest."</span>
+  ],
+  <span class="k">"confidence"</span>: <span class="n">0.95</span>
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Four stages from pixels to physics.</p>
+      <div class="pipeline">
+        <div class="pipeline-card">
+          <div class="pipeline-num">1</div>
+          <h3>Image Input</h3>
+          <p>Upload an image or describe a scene in natural language.</p>
+        </div>
+        <div class="pipeline-connector"></div>
+        <div class="pipeline-card">
+          <div class="pipeline-num">2</div>
+          <h3>Visual Encoding</h3>
+          <p>DINO + CLIP extract spatial and semantic features from the scene.</p>
+        </div>
+        <div class="pipeline-connector"></div>
+        <div class="pipeline-card">
+          <div class="pipeline-num">3</div>
+          <h3>Physics Brain</h3>
+          <p>An LLM identifies objects, computes forces, and predicts trajectories.</p>
+        </div>
+        <div class="pipeline-connector"></div>
+        <div class="pipeline-card">
+          <div class="pipeline-num">4</div>
+          <h3>Guided Generation</h3>
+          <p>Physics constraints guide diffusion to produce physically-plausible outputs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section section-alt" id="features">
+    <div class="container">
+      <h2 class="section-title">Features</h2>
+      <p class="section-sub">Everything you need for physics-aware AI.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">18</div>
+          <h3>Material Types</h3>
+          <p>Rubber, wood, metal, glass, ice, water, and 12 more&mdash;each with distinct physical properties.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">10</div>
+          <h3>Force Types</h3>
+          <p>Gravity, normal, friction, tension, spring, drag, buoyancy, magnetic, applied, and centripetal.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 20 8 14 12 10C16 6 20 4 20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 3l4 1-1 4" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Trajectory Prediction</h3>
+          <p>Time-stamped 3D position sequences for every moving object in the scene.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Physics Constraints</h3>
+          <p>Energy conservation, no-penetration, contact maintenance&mdash;8 constraint types with confidence scores.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="2"/><path d="M6 10h4M6 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Runs on Apple Silicon</h3>
+          <p>LoRA fine-tuned Qwen2.5-7B-4bit runs locally via MLX. No cloud GPU required.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">{ }</div>
+          <h3>Structured JSON Output</h3>
+          <p>Every response is Pydantic-validated against a strict schema. No parsing headaches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="section" id="demo">
+    <div class="container">
+      <h2 class="section-title">Live Demo</h2>
+      <p class="section-sub">Describe a scene and watch the physics brain reason about it.</p>
+      <div class="demo-panel">
+        <div class="demo-input-area">
+          <label for="demo-input" class="sr-only">Describe a scene</label>
+          <textarea id="demo-input" class="demo-input" rows="3" placeholder="A glass cup sits on the edge of a wooden table, halfway overhanging..."></textarea>
+          <button id="demo-btn" class="btn btn-primary demo-btn">Analyze</button>
+        </div>
+        <div class="demo-output" id="demo-output" aria-live="polite">
+          <div class="demo-placeholder">Physics analysis will appear here.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Source -->
+  <section class="section section-alt" id="open-source">
+    <div class="container open-source">
+      <h2>Open Source</h2>
+      <p>Efference is built in the open. Explore the code, run it locally, or contribute.</p>
+      <div class="code-block code-block-sm">
+        <div class="code-header">
+          <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+          <span class="code-label">Quick Start</span>
+        </div>
+<pre><code><span class="c"># Install</span>
+pip install efference
+
+<span class="c"># Analyze a scene</span>
+<span class="k">from</span> efference.llm <span class="k">import</span> SYSTEM_PROMPT
+<span class="k">from</span> efference.types <span class="k">import</span> EfferenceOutput</code></pre>
+      </div>
+      <a href="https://github.com/shanyang/efference" class="btn btn-outline" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">efference<span class="dot">.</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/shanyang/efference" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/shanyang/efference#api" target="_blank" rel="noopener">API Docs</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Efference. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
