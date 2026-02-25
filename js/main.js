@@ -19,7 +19,7 @@
   const BRAIN_NEURONS = 90;
   const SCATTER_NEURONS = 30;
   const AXON_DIST = 180;
-  const FIRE_INTERVAL = 900;
+  const FIRE_INTERVAL = 500;
   const SIGNAL_SPEED = 2.5;
 
   // Physics symbols that float around
@@ -128,7 +128,7 @@
         y: Math.random() * H,
         vx: (Math.random() - 0.5) * 0.2,
         vy: (Math.random() - 0.5) * 0.15,
-        alpha: 0.04 + Math.random() * 0.06,
+        alpha: 0.08 + Math.random() * 0.10,
         size: 10 + Math.random() * 6,
         rotation: (Math.random() - 0.5) * 0.3,
         rotSpeed: (Math.random() - 0.5) * 0.001,
@@ -219,8 +219,8 @@
     const brw = Math.min(W * 0.38, 500);
     const brh = Math.min(H * 0.32, 380);
     const grad = ctx.createRadialGradient(bcx, bcy, 0, bcx, bcy, Math.max(brw, brh));
-    grad.addColorStop(0, 'rgba(211,255,202,0.02)');
-    grad.addColorStop(0.7, 'rgba(211,255,202,0.01)');
+    grad.addColorStop(0, 'rgba(211,255,202,0.06)');
+    grad.addColorStop(0.7, 'rgba(211,255,202,0.03)');
     grad.addColorStop(1, 'rgba(211,255,202,0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
@@ -230,7 +230,7 @@
       const a = neurons[ax.from];
       const b = neurons[ax.to];
       const bright = Math.max(a.firing, b.firing);
-      const alpha = 0.025 + bright * 0.15;
+      const alpha = 0.08 + bright * 0.35;
       ctx.beginPath();
       // Slight curve via midpoint offset
       const mx = (a.x + b.x) / 2 + (a.y - b.y) * 0.1;
@@ -238,7 +238,7 @@
       ctx.moveTo(a.x, a.y);
       ctx.quadraticCurveTo(mx, my, b.x, b.y);
       ctx.strokeStyle = `rgba(211,255,202,${alpha})`;
-      ctx.lineWidth = 0.4 + bright * 1.2;
+      ctx.lineWidth = 0.6 + bright * 1.8;
       ctx.stroke();
     }
 
@@ -246,9 +246,9 @@
     for (const n of neurons) {
       if (n.dendrites === 0) continue;
       const f = n.firing;
-      const alpha = 0.04 + f * 0.1;
+      const alpha = 0.12 + f * 0.25;
       ctx.strokeStyle = `rgba(211,255,202,${alpha})`;
-      ctx.lineWidth = 0.5;
+      ctx.lineWidth = 0.7;
       for (let d = 0; d < n.dendrites; d++) {
         const angle = n.dendriteAngle + (d * Math.PI * 2 / n.dendrites);
         const len = n.r * 4 + Math.random() * 3;
@@ -283,13 +283,13 @@
       const glow = 1 - Math.abs(s.progress - 0.5) * 2;
 
       ctx.beginPath();
-      ctx.arc(px, py, 5 + glow * 5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(211,255,202,${0.06 + glow * 0.15})`;
+      ctx.arc(px, py, 6 + glow * 8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(211,255,202,${0.15 + glow * 0.3})`;
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(px, py, 1.5 + glow, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(211,255,202,${0.4 + glow * 0.6})`;
+      ctx.arc(px, py, 2 + glow * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(211,255,202,${0.6 + glow * 0.4})`;
       ctx.fill();
     }
 
@@ -300,14 +300,14 @@
       // Firing glow
       if (f > 0.05) {
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r + 10 + f * 16, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(211,255,202,${f * 0.12})`;
+        ctx.arc(n.x, n.y, n.r + 12 + f * 20, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(211,255,202,${f * 0.25})`;
         ctx.fill();
 
         // Secondary glow ring
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r + 4 + f * 8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(211,255,202,${f * 0.2})`;
+        ctx.arc(n.x, n.y, n.r + 5 + f * 10, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(211,255,202,${f * 0.4})`;
         ctx.fill();
       }
 
@@ -315,16 +315,16 @@
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx.fillStyle = f > 0.05
-        ? `rgba(211,255,202,${0.15 + f * 0.85})`
-        : `rgba(211,255,202,${n.inBrain ? 0.1 : 0.06})`;
+        ? `rgba(211,255,202,${0.3 + f * 0.7})`
+        : `rgba(211,255,202,${n.inBrain ? 0.25 : 0.15})`;
       ctx.fill();
 
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx.strokeStyle = f > 0.05
-        ? `rgba(211,255,202,${0.3 + f * 0.7})`
-        : `rgba(211,255,202,${n.inBrain ? 0.15 : 0.08})`;
-      ctx.lineWidth = 0.6;
+        ? `rgba(211,255,202,${0.5 + f * 0.5})`
+        : `rgba(211,255,202,${n.inBrain ? 0.35 : 0.2})`;
+      ctx.lineWidth = 0.8;
       ctx.stroke();
     }
 
@@ -336,7 +336,7 @@
       ctx.save();
       ctx.translate(s.x, s.y);
       ctx.rotate(s.rotation);
-      ctx.fillStyle = `rgba(211,255,202,${s.alpha})`;
+      ctx.fillStyle = `rgba(211,255,202,${s.alpha * 2.5})`;
       ctx.font = `500 ${s.size}px "JetBrains Mono", monospace`;
       ctx.fillText(s.text, 0, 0);
       ctx.restore();
