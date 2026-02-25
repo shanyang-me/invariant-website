@@ -450,7 +450,9 @@
   }
 
   // --- Demo: Analyze ---
-  const API_URL = 'https://efference-api.fly.dev';
+  const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8080'
+    : 'https://efference-api.fly.dev';
   const demoBtn = document.getElementById('demo-btn');
   const demoInput = document.getElementById('demo-input');
   const demoOutput = document.getElementById('demo-output');
@@ -556,14 +558,14 @@
         method: 'POST',
         headers,
         body,
-        signal: AbortSignal.timeout(30000)
+        signal: AbortSignal.timeout(120000)
       });
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
       renderResult(data);
       renderVisual(data);
     } catch (err) {
-      console.warn('API unavailable, using fallback:', err.message);
+      console.error('Analysis failed:', err);
       renderResult(FALLBACK, true);
       renderVisual(FALLBACK);
     } finally {
