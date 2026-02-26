@@ -532,8 +532,15 @@
       if (!scene) { demoInput.focus(); return; }
       await runAnalysis({ scene });
     } else {
-      if (!uploadedFile) { dropzone.click(); return; }
-      await runAnalysis({ image: uploadedFile });
+      // If there's a text description (e.g. from example), use that for analysis
+      const scene = demoInput.value.trim();
+      if (scene) {
+        await runAnalysis({ scene });
+      } else if (uploadedFile) {
+        await runAnalysis({ image: uploadedFile });
+      } else {
+        dropzone.click();
+      }
     }
   });
 
