@@ -535,19 +535,26 @@
 
   async function waitForModel() {
     const maxWait = 90000; // 90 seconds max
-    const pollInterval = 2000;
+    const pollInterval = 3000;
     const start = Date.now();
+    let lastStatus = '';
     while (Date.now() - start < maxWait) {
       try {
-        const res = await fetch(`${API_URL}/api/health`, { signal: AbortSignal.timeout(10000) });
+        const res = await fetch(`${API_URL}/api/health`, { signal: AbortSignal.timeout(15000) });
         if (res.ok) {
           const data = await res.json();
+          lastStatus = data.status;
           if (data.status === 'ok') return true;
+          const elapsed = Math.round((Date.now() - start) / 1000);
+          demoOutput.innerHTML = `<div class="demo-loading">Loading model... (${elapsed}s)</div>`;
         }
-      } catch (e) { /* server not up yet */ }
+      } catch (e) {
+        const elapsed = Math.round((Date.now() - start) / 1000);
+        demoOutput.innerHTML = `<div class="demo-loading">Waking up server... (${elapsed}s)</div>`;
+      }
       await new Promise(r => setTimeout(r, pollInterval));
     }
-    return false;
+    throw new Error(`Server not ready after 90s (last status: ${lastStatus})`);
   }
 
   async function runAnalysis(input) {
@@ -556,8 +563,7 @@
     demoBtn.disabled = true;
 
     try {
-      const ready = await waitForModel();
-      if (!ready) throw new Error('Server did not become ready in time');
+      await waitForModel();
 
       demoOutput.innerHTML = '<div class="demo-loading">Analyzing scene (10-30s)...</div>';
 
@@ -573,8 +579,8 @@
       renderVisual(data);
     } catch (err) {
       console.error('Analysis failed:', err);
-      renderResult(FALLBACK, true);
-      renderVisual(FALLBACK);
+      demoOutput.innerHTML = `<div class="demo-result"><p style="color:#ff6b6b;font-family:var(--font-body);">Error: ${err.message}</p><p style="color:var(--text-muted);font-size:0.8rem;font-family:var(--font-body);">API: ${API_URL}</p></div>`;
+      return;
     } finally {
       demoBtn.disabled = false;
     }
