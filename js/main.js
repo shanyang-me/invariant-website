@@ -11,8 +11,10 @@
   const BRAIN_NEURONS = 35;
   const SCATTER_NEURONS = 10;
   const AXON_DIST = 200;
-  const FIRE_INTERVAL = 1500;
+  const FIRE_INTERVAL = 2000;
   const SIGNAL_SPEED = 1.2;
+  const MAX_SIGNALS = 20;
+  const CASCADE_PROB = 0.25;
 
   // Physics symbols that float around
   const SYMBOLS = [
@@ -140,9 +142,10 @@
     const n = neurons[idx];
     if (n.refractory > 0) return;
     n.firing = 1.0;
-    n.refractory = 70;
+    n.refractory = 120;
 
     for (const ax of axons) {
+      if (signals.length >= MAX_SIGNALS) break;
       let target = -1;
       if (ax.from === idx) target = ax.to;
       else if (ax.to === idx) target = ax.from;
@@ -166,10 +169,7 @@
   function maybeFireRandom(time) {
     if (time - lastFire > FIRE_INTERVAL) {
       lastFire = time;
-      const count = 1 + Math.floor(Math.random() * 2);
-      for (let c = 0; c < count; c++) {
-        fireNeuron(Math.floor(Math.random() * neurons.length));
-      }
+      fireNeuron(Math.floor(Math.random() * neurons.length));
     }
   }
 
@@ -190,7 +190,7 @@
       const s = signals[i];
       s.progress += s.speed;
       if (s.progress >= 1) {
-        if (Math.random() < 0.5) fireNeuron(s.toIdx);
+        if (Math.random() < CASCADE_PROB) fireNeuron(s.toIdx);
         signals.splice(i, 1);
       }
     }
