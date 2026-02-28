@@ -154,7 +154,29 @@
         </div>
         <div class="demo-actions">
           <button id="demo-btn" class="btn btn-primary demo-btn-full">Analyze</button>
-          <button id="demo-example" class="btn btn-outline demo-btn-full">Try Example: Glass on Table Edge</button>
+        </div>
+        <div class="demo-examples">
+          <p class="demo-examples-label">Try an example from <strong>DreamDojo</strong></p>
+          <div class="demo-examples-row">
+            <button class="demo-example-card" data-example="apple">
+              <img src="assets/dreamdojo_ep000.jpg" alt="Red apple and silver pan" loading="lazy">
+              <span>Red Apple &rarr; Pan</span>
+            </button>
+            <button class="demo-example-card" data-example="cup">
+              <img src="assets/dreamdojo_ep006.jpg" alt="Red cup and blue plate" loading="lazy">
+              <span>Red Cup &rarr; Plate</span>
+            </button>
+            <button class="demo-example-card" data-example="cube">
+              <img src="assets/dreamdojo_ep012.jpg" alt="Rubik's cube and shelf" loading="lazy">
+              <span>Rubik's Cube &rarr; Shelf</span>
+            </button>
+            <button class="demo-example-card" data-example="glass">
+              <span class="demo-example-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="10" y="6" width="12" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="20" width="16" height="4" rx="1" fill="#4a3728" stroke="#665040" stroke-width="1"/></svg>
+              </span>
+              <span>Glass on Table Edge</span>
+            </button>
+          </div>
         </div>
         <div class="demo-output-grid" id="demo-output-grid">
           <div class="demo-visual" id="demo-visual" aria-live="polite">
@@ -323,6 +345,6 @@ pip install efference
     </div>
   </footer>
 
-  <script src="js/main.js?v=10"></script>
+  <script src="js/main.js?v=11"></script>
 </body>
 </html>

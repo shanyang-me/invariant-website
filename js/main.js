@@ -498,11 +498,117 @@
     confidence: 0.88
   };
 
-  const EXAMPLE_DESCRIPTION = 'A glass cup sits on the edge of a wooden table, about 55% overhanging. The glass is partially filled with water. The table is 75 cm tall. A concrete floor is below.';
-  const exampleBtn = document.getElementById('demo-example');
+  // --- DreamDojo example data ---
+  const EXAMPLES = {
+    apple: {
+      description: 'A humanoid robot stands at a wooden table. A red apple (rubber, ~0.20 kg) rests on the table. A silver pan (metal, ~0.80 kg) sits nearby. The robot\'s right gripper is about to pick up the red apple and place it in the silver pan.',
+      image: 'assets/dreamdojo_ep000.jpg',
+      fallback: {
+        objects: [
+          { name: "red_apple", material: "rubber", mass_kg: 0.20, bbox: { x: 180, y: 120, w: 40, h: 40 }, state: "resting" },
+          { name: "silver_pan", material: "metal", mass_kg: 0.80, bbox: { x: 300, y: 150, w: 80, h: 30 }, state: "resting" },
+          { name: "table", material: "wood", mass_kg: 15.0, bbox: { x: 50, y: 180, w: 420, h: 20 }, state: "static" }
+        ],
+        forces: [
+          { type: "gravity", source: "earth", target: "red_apple", magnitude: 1.96, direction: { x: 0, y: -1, z: 0 } },
+          { type: "normal", source: "table", target: "red_apple", magnitude: 1.96, direction: { x: 0, y: 1, z: 0 } },
+          { type: "gravity", source: "earth", target: "silver_pan", magnitude: 7.85, direction: { x: 0, y: -1, z: 0 } },
+          { type: "normal", source: "table", target: "silver_pan", magnitude: 7.85, direction: { x: 0, y: 1, z: 0 } }
+        ],
+        trajectories: [{
+          object_name: "red_apple",
+          points: [
+            { t: 0.0, position: { x: 0.35, y: 0.8, z: 0 } },
+            { t: 0.5, position: { x: 0.40, y: 0.95, z: 0 } },
+            { t: 1.0, position: { x: 0.55, y: 0.95, z: 0 } },
+            { t: 1.5, position: { x: 0.58, y: 0.8, z: 0 } }
+          ]
+        }],
+        constraints: [
+          { type: "contact_maintained", description: "Apple rests stably in pan after placement.", confidence: 0.92 }
+        ],
+        will_happen: ["The robot will grasp the apple and place it in the pan.", "The pan will remain stable under the added weight."],
+        wont_happen: ["The apple will not roll off the pan.", "The table will not tip over."],
+        reasoning: "The apple is light (0.20 kg) relative to the pan (0.80 kg). The pan's concave shape will cradle the apple. The gripper applies a controlled pick-and-place trajectory.",
+        confidence: 0.91
+      }
+    },
+    cup: {
+      description: 'A humanoid robot stands at a wooden table. A red cup (ceramic, ~0.30 kg) rests on the table. A blue plate (ceramic, ~0.40 kg) sits nearby. The robot\'s right gripper is about to pick up the red cup and place it on the blue plate.',
+      image: 'assets/dreamdojo_ep006.jpg',
+      fallback: {
+        objects: [
+          { name: "red_cup", material: "ceramic", mass_kg: 0.30, bbox: { x: 160, y: 100, w: 50, h: 70 }, state: "resting" },
+          { name: "blue_plate", material: "ceramic", mass_kg: 0.40, bbox: { x: 310, y: 160, w: 90, h: 20 }, state: "resting" },
+          { name: "table", material: "wood", mass_kg: 15.0, bbox: { x: 50, y: 180, w: 420, h: 20 }, state: "static" }
+        ],
+        forces: [
+          { type: "gravity", source: "earth", target: "red_cup", magnitude: 2.94, direction: { x: 0, y: -1, z: 0 } },
+          { type: "normal", source: "table", target: "red_cup", magnitude: 2.94, direction: { x: 0, y: 1, z: 0 } },
+          { type: "gravity", source: "earth", target: "blue_plate", magnitude: 3.92, direction: { x: 0, y: -1, z: 0 } },
+          { type: "normal", source: "table", target: "blue_plate", magnitude: 3.92, direction: { x: 0, y: 1, z: 0 } }
+        ],
+        trajectories: [{
+          object_name: "red_cup",
+          points: [
+            { t: 0.0, position: { x: 0.31, y: 0.8, z: 0 } },
+            { t: 0.5, position: { x: 0.38, y: 0.95, z: 0 } },
+            { t: 1.0, position: { x: 0.58, y: 0.95, z: 0 } },
+            { t: 1.5, position: { x: 0.60, y: 0.82, z: 0 } }
+          ]
+        }],
+        constraints: [
+          { type: "contact_maintained", description: "Cup rests on plate after placement.", confidence: 0.90 }
+        ],
+        will_happen: ["The robot will grasp the cup and place it on the plate.", "The plate will support the cup stably."],
+        wont_happen: ["The cup will not tip over on the plate.", "Neither ceramic object will break during normal handling."],
+        reasoning: "The cup (0.30 kg) is lighter than the plate (0.40 kg). The plate's flat surface provides stable support. Ceramic-on-ceramic has sufficient friction to prevent sliding.",
+        confidence: 0.89
+      }
+    },
+    cube: {
+      description: 'A humanoid robot stands at a wooden table. A Rubik\'s cube (plastic, ~0.10 kg) rests on the table. A dark brown shelf (wood) is nearby. The robot\'s right gripper is about to pick up the Rubik\'s cube and place it on the top level of the shelf.',
+      image: 'assets/dreamdojo_ep012.jpg',
+      fallback: {
+        objects: [
+          { name: "rubiks_cube", material: "plastic", mass_kg: 0.10, bbox: { x: 200, y: 130, w: 36, h: 36 }, state: "resting" },
+          { name: "shelf", material: "wood", mass_kg: 8.0, bbox: { x: 350, y: 60, w: 100, h: 160 }, state: "static" },
+          { name: "table", material: "wood", mass_kg: 15.0, bbox: { x: 50, y: 180, w: 420, h: 20 }, state: "static" }
+        ],
+        forces: [
+          { type: "gravity", source: "earth", target: "rubiks_cube", magnitude: 0.98, direction: { x: 0, y: -1, z: 0 } },
+          { type: "normal", source: "table", target: "rubiks_cube", magnitude: 0.98, direction: { x: 0, y: 1, z: 0 } }
+        ],
+        trajectories: [{
+          object_name: "rubiks_cube",
+          points: [
+            { t: 0.0, position: { x: 0.39, y: 0.8, z: 0 } },
+            { t: 0.5, position: { x: 0.45, y: 1.0, z: 0 } },
+            { t: 1.0, position: { x: 0.65, y: 1.0, z: 0 } },
+            { t: 1.5, position: { x: 0.68, y: 0.92, z: 0 } }
+          ]
+        }],
+        constraints: [
+          { type: "contact_maintained", description: "Cube rests on shelf after placement.", confidence: 0.88 }
+        ],
+        will_happen: ["The robot will lift the cube and place it on the top shelf.", "The cube will rest stably on the flat shelf surface."],
+        wont_happen: ["The cube will not fall off the shelf.", "The shelf will not collapse under the light cube."],
+        reasoning: "The Rubik's cube is very light (0.10 kg) and has a flat base, making shelf placement trivial. The robot needs to raise its arm high enough to reach the top shelf level.",
+        confidence: 0.87
+      }
+    },
+    glass: {
+      description: 'A glass cup sits on the edge of a wooden table, about 55% overhanging. The glass is partially filled with water. The table is 75 cm tall. A concrete floor is below.',
+      image: 'assets/example-scene.svg',
+      fallback: FALLBACK
+    }
+  };
 
-  function loadExample() {
-    // Switch to image mode and load example
+  function loadExample(key) {
+    const example = EXAMPLES[key];
+    if (!example) return;
+
+    // Switch to image mode
     tabs.forEach(t => t.classList.remove('active'));
     tabs.forEach(t => { if (t.dataset.mode === 'image') t.classList.add('active'); });
     currentMode = 'image';
@@ -510,19 +616,21 @@
     imageMode.style.display = '';
 
     // Show example image in preview
-    previewImg.src = 'assets/example-scene.svg';
+    previewImg.src = example.image;
     previewWrap.style.display = '';
     dropzone.style.display = 'none';
 
     // Fill the text input for reference
-    demoInput.value = EXAMPLE_DESCRIPTION;
+    demoInput.value = example.description;
 
     // Render with fallback data immediately (no server needed)
-    renderResult(FALLBACK, false);
-    renderVisual(FALLBACK);
+    renderResult(example.fallback, false);
+    renderVisual(example.fallback);
   }
 
-  exampleBtn.addEventListener('click', loadExample);
+  document.querySelectorAll('.demo-example-card').forEach(card => {
+    card.addEventListener('click', () => loadExample(card.dataset.example));
+  });
 
   // Example loads only when button is clicked
 
