@@ -395,22 +395,6 @@
     return d.innerHTML;
   }
 
-  // --- Demo: Tabs ---
-  const tabs = document.querySelectorAll('.demo-tab');
-  const textMode = document.getElementById('demo-text-mode');
-  const imageMode = document.getElementById('demo-image-mode');
-  let currentMode = 'text';
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentMode = tab.dataset.mode;
-      textMode.style.display = currentMode === 'text' ? '' : 'none';
-      imageMode.style.display = currentMode === 'image' ? '' : 'none';
-    });
-  });
-
   // --- Demo: Image upload ---
   const dropzone = document.getElementById('demo-dropzone');
   const fileInput = document.getElementById('demo-file');
@@ -619,19 +603,12 @@
     sceneDescEl.textContent = example.description;
     sceneDescEl.classList.add('visible');
 
-    // Switch to image mode
-    tabs.forEach(t => t.classList.remove('active'));
-    tabs.forEach(t => { if (t.dataset.mode === 'image') t.classList.add('active'); });
-    currentMode = 'image';
-    textMode.style.display = 'none';
-    imageMode.style.display = '';
-
     // Show example image in preview
     previewImg.src = example.image;
     previewWrap.style.display = '';
     dropzone.style.display = 'none';
 
-    // Fill the text input for reference
+    // Fill the text input
     demoInput.value = example.description;
 
     // Render with fallback data immediately (no server needed)
